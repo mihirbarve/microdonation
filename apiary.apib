@@ -1,0 +1,770 @@
+FORMAT: 1A
+HOST: https://13.234.225.242:8880/
+
+# Microdonation
+
+A platform for help to all the people in need accross India.
+A joint Collaboration between an NGO and Donor
+
+
+
+# Group Auth
+
+## Login [/api/auth/signin]
+### /api/auth/signin [POST]
+Use this to log the user into the application.
+
++ Request (application/json)
+
+        { 
+           "usernameOrEmail":"mihir.itworks@gmail.com",
+           "password":"mihirb123"
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            {
+            "success": true,
+            "data": {
+              "user": {
+                "userId": 4,
+                "userName": "mihir.itworks@gmail.com",
+                "email": "mihir.itworks@gmail.com",
+                "role": "D",
+                "userStatus": true,
+                "lockedUser": false,
+                "mobile": "7030474447",
+                "name": "Mihir Barve"
+                },
+            "token": "<session Token>"
+                }
+            }
+
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Change Password [/api/auth/changePassword]
+### /api/auth/changePassword [POST]
+Use this to Change user password
+
++ Request
+
+    + Body
+    
+            {
+                "password":"yogesh1235",
+                "confirmPassword":"yogesh1235",
+                "username":"yograjj@gmail.com"
+            }
+    
++ Response 200 (application/json)
+
+        
+
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+        
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Forgot Password [/api/auth/forgotPassword]
+### /api/auth/forgotPassword [POST]
+This api is used to sent Otp on the registered email addresss or phone no to reset the password
+
++ Request (application/json)
+
+        {
+            "username":"yograjj@gmail.com",
+            "sendOTP":"E" /*E -Email | P-Phone No*/
+        }
+
++ Response 200 (application/json)
+
+        {
+            "message": "Password reset email successfully sent."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+        
+## Verify Email [/api/auth/confirmEmail/{emailId}]
+### /api/auth/confirmEmail/:emailId [GET]
+This Api is used to send verification link to regisered email address during registration and email change
+
++ Parameters
+
+    + emailId: aaa@xxx.com (required, string) - Email ID of the user to send emai  verification link.
+    
++ Response 200 (application/json)
+
+        {
+             "success": true,
+             "message": "Verification link sent to <email adress>. Kindly check the spam folder in case not received in inbox."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+        
+## Verify OTP [/api/auth/verifyOTP]
+### /auth/logout_users [POST]
+This API is uesed for OTP Verification 
+
++ Request (application/json)
+
+    + Headers
+    
+            
+    + Body
+    
+            {
+                "username":"mihir@gmail.com",
+                "otp": "337980"
+            }
+            
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "OTP Verified"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "success": false,
+            "message": "Invalid OTP "
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+# Group Master API
+This API can be used for endpoints related to Master Data.
+
+## Get Lookup [/api/master/getLookup/{type}]
+### /api/master/getLookup/:type [GET]
+Retrieve the Lookup Code and Values basis Lookup Type
+
++ Parameters
+
+    + type: NGOCategory (required, string) - Type for Lookup.
+    
++ Response 200 (application/json)
+
+            {
+                "success": true,
+                "data": {
+                    "lookups": [
+                        {
+                            "lookupCode": "BINGO",
+                            "lookupType": "NGOCategory",
+                            "lookupValue": "Business-Friendly International NGO",
+                            "dtCreated": "2020-07-12T01:21:06.000+0000"
+                        },
+                        {
+                            "lookupCode": "CSO",
+                            "lookupType": "NGOCategory",
+                            "lookupValue": "Civil Society Organization",
+                            "dtCreated": "2020-07-12T01:21:06.000+0000"
+                        },
+                        {
+                            "lookupCode": "DONGO",
+                            "lookupType": "NGOCategory",
+                            "lookupValue": "Donor Organized NGO",
+                            "dtCreated": "2020-07-12T01:21:06.000+0000"
+                        },
+                        {
+                            "lookupCode": "ENGO",
+                            "lookupType": "NGOCategory",
+                            "lookupValue": "Environmental NGO",
+                            "dtCreated": "2020-07-12T01:21:06.000+0000"
+                        },
+                        {
+                            "lookupCode": "GONGO",
+                            "lookupType": "NGOCategory",
+                            "lookupValue": "Government-Operated NGOs",
+                            "dtCreated": "2020-07-12T01:21:06.000+0000"
+                        }
+                    ]
+                }
+            }
+
++ Response 404 (application/json)
+
+            {
+                "success": false,
+                "message": "No Data Found for lookup type : <type>"
+            }
+    
++ Response 500 (application/json)
+
+            {
+                "message": "Relevant server error message from API."
+            }
+
+# Group Users
+This API contains endpoints for user registration process for NGO and Donor
+
+
+## User Registration [/api/auth/signup]
+### /api/auth/signup [POST]
+User Registration
+
++ Request
+    
+    + Body
+    
+            {
+                "name":"Mihir Barve", /*Mandatory*/
+                "password":"mihirb123",  /*Mandatory*/
+                "email":"mihir.barve@live.com",  /*Mandatory*/
+                "userIdType":"E",  /*Mandatory  E-UserName as email | P-Phone No as userId*/
+                "age":32, /*numeric Mandatory for Donor | Not required for NGO Registration*/
+                "address":"E-1103,Teerth Aarohi Susgaon Pune ,411021", /*Mandatory*/
+                "role":"D", /*Mandatory D - Donor | N- NGO*/
+                "ngoCategory":"CNGO", /*Mandatory for NGO Registration| not required for Donor*/
+                "contactNo":99999999999, /*Mandatory*/
+                "agreeToTerms":true, /*Mandatory*/
+                "emailVerified":"Y", /*Mandatory*/
+                "contactNoVerified":"Y", /*Mandatory*/
+                "city":"Pune", /*Mandatory*/
+                "occupation":"service", /*Mandatory for Donor | Not Required for NGO Registration*/
+                "ngoContPerson":"Mihir Barve",/*Mandatory for NGO Registration| not required for Donor*/
+                "registrationId":"qqw1235"/*Mandatory for NGO Registration| not required for Donor*/
+            }
+
++ Response 200 (application/json)
+
+            {
+                "success": true,
+                "message": "User Created Successfully",
+                "data": {
+                "id": 16,
+                "szName": "Mihir Barve",
+                "szUsername": "mihir.barve@live1.com",
+                "szEmail": "mihir.barve@live1.com",
+                "szPassword": "$2a$10$c63L8tlIL.nfWPya0L2dz.2lhT1VRrfuet.VUE1S9JdcdMzpoxvQS",
+                "szRole": "D",
+                "szMobile": 99999999989,
+                "iOtp": 0,
+                "cUserStatus": false,
+                "cUserLocked": false,
+                "dtCreated": null,
+                "szResetOtp": null,
+                "szUserIdType": "E",
+                "dtOtpExpireDateTime": null
+                }
+            }
+
+        
++ Response 400 (application/json)
+
+        {
+            "success": false,
+            "message": "Email Address already in use!" /*Incase of Phone No and Email relevent message will be sent*/
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+        
+## Get User Details [/api/auth/userprofile/{id}]
+### /api/auth/userprofile/:id [GET]
+Retrieve the details of one userthe response will be different based on the user Id referest to Donor or NGO
+
++ Parameters
+
+    + id: 1 (required, number) - ID of the user to fetch.
+    
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": {
+                "userId": 1,
+                "id": 1,
+                "ngoName": "Youngsters",
+                "email": "barve.mihir@gmail.com",
+                "registrationId": "12345sdf",
+                "mobile": "9594908192",
+                "locked": false,
+                "status": false,
+                "agreeToTerms": false
+             }
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+
+# Group Donor API
+This API contains endpoints for Donor reated Events like Update Profile,Ngo Mapping etc..
+
+## Update Donor Profile [/api/auth/updateProfileDonor]
+### /api/auth/updateProfileDonor [POST]
+This API is used to update Donor additional information
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId":6, /*Mandatory*/
+                "donorName":"Mihir barve",
+                "email":"mihir.barve2012@gmail.com", /*Cannot be blank*/
+                "addressLine1":"nagapur, Karjat",
+                "addressLine2":"Ahmednagar, Maharashtra",
+                "city":"Nagar",
+                "state":"Maha",
+                "country":"India",
+                "pincode":"411111",
+                "contactNo1":"8600250073",
+                "mobile":"8600250071",
+                "status":false,
+                "age":30, /*Numeric*/
+                "occupation":"Employer",
+                "userIdType":"Phone",
+                "emailOtp":"email123",
+                "phoneOtp":"phone123",
+                "agreeToTerms":false
+            }   
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "User Profile Updated successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Donor My NGO [/api/donor/myNgo]
+### /api/donor/myNgo [POST]
+This Api is used to setup percentage allocation and List of NGO for a specific donor
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId":"6",  /*Mandatory*/
+                "ngoDetails":  /*Mandatory List cannot be empty*/
+                [
+                    {
+                        "ngoId":14,
+                        "pymtAllocPercentage":30
+                    }
+                    {
+                        "ngoId":15,
+                        "pymtAllocPercentage":30
+                    }
+                ] 
+            }
+            
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "My NGO Allocated Successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+        
+## Payment Frequency Setup [/api/donor/updatePymtFrequency]
+### /api/donor/updatePymtFrequency [POST]
+This API is used o setup frequency of payment o myNGO , Monthly,Weekly,Daily
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId": "6", /*Mandatory*/
+                "donorFrequency":  /*Mandatory*/
+                [
+                    {
+                    "ngoId": "13",
+                    "paymentFrequency": "M",
+                    "paymentDay": "5",
+                    "amount": 100,
+                    "paymentGatewayCode": "1234sdf"
+                    },
+                    {
+                    "ngoId": "14",
+                    "paymentFrequency": "W",
+                    "paymentDay": "5",
+                    "amount": 100,
+                    "paymentGatewayCode": "1234sdf"
+                    }
+                ]   
+                
+            }
+            
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "Frequency Updated Successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Get Donor Payment Frequency Details [/api/donor/getPymtFrequency/{id}]
+### /api/donor/getPymtFrequency/:id [GET]
+Retrieve the payment Frequency Details of one Donor
+
++ Parameters
+
+    + id: 6 (required, number) - ID of the user to fetch.
+    
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": {
+            "userId": 6,
+            "donorFrequency": 
+                [
+                        {
+                        "ngoId": 13,
+                        "paymentFrequency": "M",
+                        "amount": 100.0,
+                        "paymentDay": 5,
+                        "nextReminderDate": null,
+                        "paymentGatewayCode": "1234sdf"
+                        },
+                        {
+                        "ngoId": 14,
+                        "paymentFrequency": "W",
+                        "amount": 100.0,
+                        "paymentDay": 5,
+                        "nextReminderDate": null,
+                        "paymentGatewayCode": "1234sdf"
+                        }
+                ]
+                }
+            }
+        
++ Response 400 (application/json)
+
+        {
+            "success": false,
+            "message": "User is not Active, Cannot Process Request"
+        }   
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Donations [/api/donor/ngoPayment]
+### /api/donor/ngoPayment [POST]
+This Api is used to save the donations made by the donor to one or multiple NGO
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId": 6,
+                "totalAmount": 10000,
+                "paymentDetails": [
+                {
+                    "ngoId": 13,
+                    "paymentMode": "Online",
+                    "trandactionId": "asdsad23456df",
+                    "paymentStatus": "S",
+                    "failureReason": "",
+                    "failureNotification": "",
+                    "fees": 100,
+                    "netAmount": 2000,
+                    "totalAmount": 2100,
+                    "paymentrRefNo": 1
+                }
+                ]
+            }
+            
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "Payment Updated Successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## References [/api/donor/myReferences]
+### /api/donor/ngoPayment [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId":"6",
+                "referenceName":"MIhir M Barve",
+                "mobile":"7030474437",
+                "email":"mihir.barve1@live.com",
+                "conversationStatus":true,
+                "reminderNo":1
+            }
+            
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "Reference Updated Successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Get My References [/api/donor/getMyReferences/{id}]
+### /api/donor/getMyReferences/:id [GET]
+Retrieve the References provided by the donor
+
++ Parameters
+
+    + id: 6 (required, number) - ID of the user to fetch.
+    
++ Response 200 (application/json)
+
+            {
+                "success": true,
+                "data": {
+                "userId": 6,
+                "references": [
+                {
+                "referenceName": "MIhir Barve",
+                "mobile": "7030474447",
+                "email": "mihir.barve@live.com",
+                "conversationStatus": true,
+                "reminderNo": 1
+                },
+                {
+                "referenceName": "MIhir M Barve",
+                "mobile": "7030474437",
+                "email": "mihir.barve1@live.com",
+                "conversationStatus": true,
+                "reminderNo": 1
+                }
+            ]
+            }
+            }
+        
++ Response 400 (application/json)
+
+        {
+            "success": false,
+            "message": "User is not Active, Cannot Process Request"
+        }   
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+# Group NGO API
+This API contains endpoints for Donor reated Events like Update Profile,Ngo Mapping etc..
+
+## Update Ngo Profile [/api/auth/updateProfileNgo]
+### /api/auth/updateProfileNgo [POST]
+This API is used to update NGO additional information like bank info and contact details etc
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "userId":11,  /*Mandatory*/
+                "ngoName":"ResponsibleFoundation", /*Mandatory*/
+                "email":"barve.mihir@gmail.com", /*Mandatory*/
+                "registrationId":"abc123", /*Mandatory*/
+                "redistrationDate":"2020-01-01", /*Mandatory*/
+                "addressLine1":"Karjat", /*Mandatory*/
+                "addressLine2":"Nagar",
+                "city":"Karjat,A.nagar",
+                "state":"Maharashtra",
+                "country":"India",
+                "pincode":"411233",
+                "contactNo1":"1234567890", /*Mandatory*/
+                "contactNo2":"0987654321", 
+                "mobile":"1234556786",
+                "ngoDesc":"Social Resp Found",
+                "primaryCategory":"Health", /*Mandatory*/
+                "secondaryCategory":"Children",
+                "website":"www.resfou.com",
+                "ifsc":"sbin000123",
+                "bankAccountNo":"1244567889764", 
+                "fundTransferRef":"jhgjgff",
+                "locked":true,
+                "status":true,
+                "veriifiedBy":"yogi",
+                "contactPerson":"yogesh",
+                "userIdType":"Phone",
+                "emailOtp":"email1234",
+                "phoneOtp":"phine1234",
+                "agreeToTerms":true /*Mandatory*/
+            }   
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "message": "User Profile Updated successfully"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message": "Relevant client error message from API."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
+
+## Get References [/api/ngo/getReferences/{id}]
+### /api/ngo/getReferences/:id [GET]
+Retrieve the payment Frequency Details of one Donor
+
++ Parameters
+
+    + id: 6 (required, number) - ID of the user to fetch.
+    
++ Response 200 (application/json)
+
+            {
+                "success": true,
+                "data": {
+                "userId": 11,
+                "references": [
+                {
+                    "referenceName": "HomeforPeople",
+                    "mobile": "7030474437",
+                    "email": "mihir.barve1@live.com",
+                    "conversationStatus": false,
+                    "reminderNo": 0
+                }
+            ]
+            }
+            }
+        
++ Response 400 (application/json)
+
+        {
+            "success": false,
+            "message": "User is not Active, Cannot Process Request"
+        }   
+
++ Response 500 (application/json)
+
+        {
+            "message": "Relevant server error message from API."
+        }
